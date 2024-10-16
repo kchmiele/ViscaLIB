@@ -1,31 +1,23 @@
 #ifndef VISCALIB_H
 #define VISCALIB_H
 
-#include <Arduino.h>
+#include <WiFi.h>
+#include <WiFiUdp.h>
 
 class ViscaLib {
 public:
-  ViscaLib(Stream& serialPort);
-  void IF_Clear();
-  void PAN_TILT_UP(byte speed);
-  void PAN_TILT_DOWN(byte speed);
-  void PAN_TILT_LEFT(byte speed);
-  void PAN_TILT_RIGHT(byte speed);
-  void PAN_TILT_UP_LEFT(byte panSpeed, byte tiltSpeed);
-  void PAN_TILT_UP_RIGHT(byte panSpeed, byte tiltSpeed);
-  void PAN_TILT_DOWN_LEFT(byte panSpeed, byte tiltSpeed);
-  void PAN_TILT_DOWN_RIGHT(byte panSpeed, byte tiltSpeed);
-  void PAN_TILT_STOP(byte panSpeed, byte tiltSpeed);
-  void PAN_TILT_HOME();
-  void PAN_TILT_RESET();
-  void PAN_TILT_RAMP_CURVE(byte rampCurve);
-  void PAN_TILT_SLOW_MODE(bool enable);
-  void PAN_TILT_ABSOLUTE_POSITION(byte speed, int panPosition, int tiltPosition);
-  void PAN_TILT_RELATIVE_POSITION(byte speed, int panPosition, int tiltPosition);
+    ViscaLib(WiFiUDP &udp);  // Constructor to initialize the UDP object
+
+    void PAN_TILT_LEFT(uint8_t speed, IPAddress ip, uint16_t port);
+    void PAN_TILT_RIGHT(uint8_t speed, IPAddress ip, uint16_t port);
+    void ZOOM_IN(uint8_t speed, IPAddress ip, uint16_t port);
+    void ZOOM_OUT(uint8_t speed, IPAddress ip, uint16_t port);
+    void FOCUS_NEAR(uint8_t speed, IPAddress ip, uint16_t port);
+    void FOCUS_FAR(uint8_t speed, IPAddress ip, uint16_t port);
 
 private:
-  Stream& _serial;
-  void sendList(byte list[], size_t listsize);
+    WiFiUDP &_udp;  // Reference to the WiFiUDP object
+    void sendList(byte list[], size_t listsize, IPAddress ip, uint16_t port);
 };
 
-#endif  // VISCALIB_H
+#endif // VISCALIB_H
